@@ -38,12 +38,48 @@
     "extends": [
       "plugin:vue/essential",
       "eslint:recommended",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "prettier"
     ],
     "parserOptions": {
       "parser": "@babel/eslint-parser"
     },
-    "rules": {}
+    "rules": {
+      "semi": [
+        "error",
+        "never"
+      ],
+      "indent": [
+        "error",
+        4
+      ],
+      "vue/attributes-order": [
+        "error",
+        {
+          "order": [
+            "DEFINITION",
+            "LIST_RENDERING",
+            "CONDITIONALS",
+            "RENDER_MODIFIERS",
+            "GLOBAL",
+            [
+              "UNIQUE",
+              "SLOT"
+            ],
+            "TWO_WAY_BINDING",
+            "OTHER_DIRECTIVES",
+            "OTHER_ATTR",
+            "EVENTS",
+            "CONTENT"
+          ],
+          "alphabetical": false
+        }
+      ]
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "tabWidth": 4
   },
   "browserslist": [
     "> 1%",
