@@ -1,0 +1,14 @@
+.link {
+    color: $green;
+    transition: all .3s ease;
+
+    &.link--gray {
+        color: $dark-blue;
+    }
+
+    &:hover {
+        color: #20EBCD;
+        transition: all .3s ease;
+    }
+
+}

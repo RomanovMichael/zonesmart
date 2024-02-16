@@ -1,0 +1,40 @@
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Graphik, Montserrat, sans-serif;
+    background-repeat: no-repeat;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    background-color: #F2F2F2;
+    -webkit-font-smoothing: antialiased;
+    color: $black;
+    font-size: calc((100vw - 320px) / (1920 - 320) * (16 - 14) + 14px);
+}
+
+main {
+    overflow: hidden;
+    position: relative;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+ul,
+ol {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}

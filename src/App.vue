@@ -1,11 +1,10 @@
 <template lang="pug">
 #app hello zonesmart
+    h3.hello salam zaebal
 </template>
 
 <style lang="scss">
-#app {
-    font-family: Graphik;
-    font-weight: 600;
-    color: map-get($colors, primary);
+p {
+    font-size: 1rem;
 }
 </style>
