@@ -140,6 +140,9 @@ export default new Vuex.Store({
                 )
                 .catch((err) => console.log(err))
         },
+        deleteCheckedProducts(state, data) {
+            console.log(`Удалены элементы: ${data}`)
+        },
     },
     modules: {},
 })

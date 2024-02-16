@@ -39,10 +39,11 @@
             </button>
             <div class="">{{ user_info.email }} {{ user_info.password }}</div>
         </form>
+        <button @click="deleteCheckedProducts">Удалить выделенные</button>
 
         <section class="products">
             <div v-for="item in get_goods" :key="item.id" class="products-item">
-                <input type="checkbox" />
+                <input type="checkbox" @change="isItemChecked(item.id)" />
                 <div>images: {{ item.images }}</div>
                 <img
                     style="width: 100px; height: 100px"
@@ -70,11 +71,7 @@ export default {
                 email: "",
                 password: "",
             },
-            res: {
-                accessToken: null,
-                refreshToken: null,
-            },
-            products: null,
+            checked_products: [],
         }
     },
     computed: {
@@ -93,6 +90,17 @@ export default {
         },
         async getProducts() {
             await this.$store.dispatch("getProducts")
+        },
+        isItemChecked(id) {
+            let index = this.checked_products.indexOf(id)
+            if (index !== -1) {
+                this.checked_products.splice(index, 1)
+                return
+            }
+            this.checked_products.push(id)
+        },
+        deleteCheckedProducts() {
+            this.$store.dispatch("deleteCheckedProducts", this.checked_products)
         },
     },
 }
