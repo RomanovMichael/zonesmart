@@ -39,6 +39,25 @@
             </button>
             <div class="">{{ user_info.email }} {{ user_info.password }}</div>
         </form>
+
+        <section class="products">
+            <div v-for="item in get_goods" :key="item.id" class="products-item">
+                <input type="checkbox" />
+                <div>images: {{ item.images }}</div>
+                <img
+                    style="width: 100px; height: 100px"
+                    :src="item.images[0]"
+                    alt=""
+                />
+                <div>remote_id: {{ item.remote_id }}</div>
+                <div>brand_name: {{ item.brand_name }}</div>
+                <div>title: {{ item.title }}</div>
+                <div>quantity: {{ item.quantity }}</div>
+                <div>price: {{ item.price }}</div>
+                <div>min_price: {{ item.min_price }}</div>
+                <div>max_price: {{ item.max_price ?? "нет" }}</div>
+            </div>
+        </section>
     </div>
 </template>
 
@@ -63,6 +82,9 @@ export default {
             let btn_disabled =
                 this.user_info.email == "" || this.user_info.password == ""
             return btn_disabled
+        },
+        get_goods() {
+            return this.$store.getters["get_goods"]
         },
     },
     methods: {
