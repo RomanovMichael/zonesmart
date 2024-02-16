@@ -1,6 +1,6 @@
 <template lang="pug">
 #app
-    RootIcon(name="WhatsIcon")
+    RootIcon(name="DeleteSmallIcon")
 </template>
 
 <script>
