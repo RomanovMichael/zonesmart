@@ -118,6 +118,7 @@ export default new Vuex.Store({
                 .post("https://dev-ar.zonesmart.com/api/user/jwt/create/", {
                     ...user_info,
                 })
+                .then((response) => console.log(response))
                 .then((response) => {
                     commit("SET_TOKENS", response.data)
                 })
@@ -134,7 +135,6 @@ export default new Vuex.Store({
                         Authorization: `JWT ${state.user.access_token}`,
                     },
                 })
-                .then((response) => console.log(response.data.results))
                 .then((response) =>
                     commit("UPDATE_PRODUCTS", response.data.results)
                 )

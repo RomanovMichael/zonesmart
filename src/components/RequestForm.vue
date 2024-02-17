@@ -29,7 +29,7 @@
                 )
                 button.input-showpass
                     span
-                        rooticon(name="EyeIcon")
+                        root-icon(name="EyeIcon")
             span.input-error Текст ошибки
         .request-form-label.request-form-label--forgot
             router-link.link(to="#") Забыли пароль?
