@@ -98,10 +98,8 @@ export default new Vuex.Store({
         ],
     },
     getters: {
-        get_goods(state) {
-            const goods = state.products ?? []
-            return goods
-        },
+        is_authorized: (state) => !!state.user.access,
+        get_goods: (state) => state.products ?? [],
     },
     mutations: {
         SET_USER_INFO(state, data) {

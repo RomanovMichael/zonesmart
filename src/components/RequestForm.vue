@@ -61,6 +61,7 @@ export default {
         async logIn() {
             const { email, password } = this
             await this.$store.dispatch("getToken", { email, password })
+            this.$router.push("/")
         },
     },
 }

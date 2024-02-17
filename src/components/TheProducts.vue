@@ -1,6 +1,7 @@
 <template>
     <section class="products">
-        <button @click="deleteCheckedProducts">Удалить выделенные</button>
+        <div class="">products</div>
+        <!-- <button @click="deleteCheckedProducts">Удалить выделенные</button>
         <div v-for="item in get_goods" :key="item.id" class="products-item">
             <input type="checkbox" @change="checkItem(item.id)" />
             <div>images: {{ item.images }}</div>
@@ -16,7 +17,7 @@
             <div>price: {{ item.price }}</div>
             <div>min_price: {{ item.min_price }}</div>
             <div>max_price: {{ item.max_price ?? "нет" }}</div>
-        </div>
+        </div> -->
     </section>
 </template>
 

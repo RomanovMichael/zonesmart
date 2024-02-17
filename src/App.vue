@@ -1,7 +1,6 @@
-<template>
-    <div id="app">
-        <router-view></router-view>
-    </div>
+<template lang="pug">
+#app
+    router-view
 </template>
 
 <script>
@@ -15,7 +14,7 @@ export default {
             }
         },
     },
-    mounted() {
+    created() {
         this.checkUser()
     },
 }
