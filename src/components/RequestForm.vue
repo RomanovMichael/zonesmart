@@ -1,56 +1,40 @@
-<template>
-    <div class="request-form-wrap tile">
-        <form class="request-form">
-            <h1 class="request-form-title">Вход</h1>
-            <div class="request-form-label request-form-label--reg">
-                <span>Нет аккаунта?</span>
-                <router-link class="link" to="#"
-                    >Зарегистрироваться</router-link
-                >
-            </div>
-            <div class="request-form-input input">
-                <div class="input-label caption">Email</div>
-                <div class="input-wrap">
-                    <input
-                        v-model="user_info.email"
-                        class="input-inner"
-                        type="email"
-                        name="email"
-                        placeholder="yourmail@mail.ru"
-                    />
-                </div>
-                <div class="input-error">
-                    Длиннющий текст ошибки, когда не помещается в одну строку
-                </div>
-            </div>
-            <div class="request-form-input input">
-                <div class="input-label caption">Пароль</div>
-                <div class="input-wrap">
-                    <input
-                        v-model="user_info.password"
-                        class="input-inner"
-                        type="password"
-                        name="pasword"
-                        placeholder="Ваш пароль"
-                    />
-                    <button class="input-showpass">
-                        <span><RootIcon name="EyeIcon" /></span>
-                    </button>
-                </div>
-                <div class="input-error">текст ошибки</div>
-            </div>
-            <div class="request-form-label request-form-label--forgot">
-                <router-link class="link" to="#">Забыли пароль?</router-link>
-            </div>
-            <button
-                :disabled="is_btn_disabled"
-                class="request-form-btn btn btn--green"
-                @click.prevent="logIn"
-            >
-                Войти
-            </button>
-        </form>
-    </div>
+<template lang="pug">
+.request-form-wrap.tile
+    form.request-form(@submit.prevent="logIn")
+        h1.request-form-title Вход
+        .request-form-label.request-form-label--reg
+            span Нет аккаунта?
+            router-link.link(to="#") Зарегистрироваться
+        .request-form-input.input
+            label.input-label.caption(for="email") Email
+            .input-wrap
+                input.input-inner(
+                    v-model="email",
+                    type="text",
+                    name="email",
+                    placeholder="yourmail@mail.ru",
+                    autocomplete="on"
+                )
+            span.input-error
+                | Длиннющий текст ошибки, когда не помещается в одну строку
+        .request-form-input.input
+            label.input-label.caption(for="password") Пароль
+            .input-wrap
+                input.input-inner(
+                    v-model.trim="password",
+                    type="password",
+                    name="pasword",
+                    placeholder="Ваш пароль",
+                    autocomplete="on"
+                )
+                button.input-showpass
+                    span
+                        rooticon(name="EyeIcon")
+            span.input-error Текст ошибки
+        .request-form-label.request-form-label--forgot
+            router-link.link(to="#") Забыли пароль?
+        button.request-form-btn.btn.btn--green(:disabled="is_btn_disabled")
+            | Войти
 </template>
 
 <script>
@@ -61,22 +45,22 @@ export default {
     components: { RootIcon },
     data() {
         return {
-            user_info: {
-                email: "",
-                password: "",
-            },
+            email: "",
+            password: "",
+            errors: [],
         }
     },
     computed: {
         is_btn_disabled() {
-            let btn_disabled =
-                this.user_info.email == "" || this.user_info.password == ""
+            const { email, password } = this
+            let btn_disabled = email == "" || password == ""
             return btn_disabled
         },
     },
     methods: {
         async logIn() {
-            await this.$store.dispatch("getToken", this.user_info)
+            const { email, password } = this
+            await this.$store.dispatch("getToken", { email, password })
         },
     },
 }
