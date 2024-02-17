@@ -1,4 +1,4 @@
-export { default as TgIcon } from "../variants/TgIcon"
+export { default as TgIcon } from "./TgIcon"
 export { default as WhatsIcon } from "../variants/WhatsIcon"
 export { default as LogoIcon } from "../variants/LogoIcon"
 export { default as EyeIcon } from "../variants/EyeIcon"

@@ -1,0 +1,26 @@
+.btn {
+    border-radius: .375rem;
+    color: $white;
+    transition: all .3s ease;
+    padding: 1.125rem 1.875rem;
+    font-size: 1rem;
+    font-weight: 600;
+
+    &:disabled {
+        color: $gray;
+        background-color: $button_gray;
+        pointer-events: none;
+    }
+
+    &--green {
+        background-color: $green;
+
+        &:hover {
+            background-color: #2CC8B1;
+        }
+
+        &:active {
+            background-color: #29BDA7;
+        }
+    }
+}
