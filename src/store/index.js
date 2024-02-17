@@ -7,8 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         user: {
-            access_token: null,
-            refresh_token: null,
+            access: null,
+            refresh: null,
         },
         products: [
             {
@@ -104,25 +104,34 @@ export default new Vuex.Store({
         },
     },
     mutations: {
-        SET_TOKENS(state, data) {
-            state.user.access_token = data.access
-            state.user.refresh_token = data.refresh
+        SET_USER_INFO(state, data) {
+            state.user.access = data.access
+            state.user.refresh = data.refresh
         },
         UPDATE_PRODUCTS(state, data) {
             state.products = data
         },
     },
     actions: {
-        async getToken({ commit }, user_info) {
-            axios
-                .post("https://dev-ar.zonesmart.com/api/user/jwt/create/", {
-                    ...user_info,
-                })
-                .then((response) => console.log(response))
-                .then((response) => {
-                    commit("SET_TOKENS", response.data)
-                })
-                .catch((err) => console.log(err))
+        async getToken({ commit, state }, user_info) {
+            try {
+                const response = await axios.post(
+                    "https://dev-ar.zonesmart.com/api/user/jwt/create/",
+                    {
+                        ...user_info,
+                    }
+                )
+                commit("SET_USER_INFO", response.data)
+                localStorage.setItem(
+                    "user_tokens",
+                    JSON.stringify({
+                        access: state.user.access,
+                        refresh: state.user.refresh,
+                    })
+                )
+            } catch (err) {
+                console.log(err)
+            }
         },
         async getProducts({ commit, state }) {
             const params = new URLSearchParams()
