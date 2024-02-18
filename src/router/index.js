@@ -2,7 +2,7 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import LoginView from "../views/LoginView"
 import ProductsView from "../views/ProductsView"
-import store from "@/store"
+// import store from "@/store"
 
 Vue.use(VueRouter)
 
@@ -31,15 +31,15 @@ const router = new VueRouter({
     routes,
 })
 
-router.beforeEach((to, from, next) => {
-    const isAuth = store.getters.is_authorized
-    const requireAuth = to.matched.some((record) => record.meta.auth)
+// router.beforeEach((to, from, next) => {
+//     const isAuth = store.getters.is_authorized
+//     const requireAuth = to.matched.some((record) => record.meta.auth)
 
-    if (requireAuth && !isAuth) {
-        next("/login")
-    } else if (!requireAuth && isAuth) {
-        next("/")
-    }
-    next()
-})
+//     if (requireAuth && !isAuth) {
+//         next("/login")
+//     } else if (!requireAuth && isAuth) {
+//         next("/")
+//     }
+//     next()
+// })
 export default router

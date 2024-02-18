@@ -1,23 +1,118 @@
 <template>
-    <section class="products">
-        <div class="">products</div>
-        <!-- <button @click="deleteCheckedProducts">Удалить выделенные</button>
-        <div v-for="item in get_goods" :key="item.id" class="products-item">
-            <input type="checkbox" @change="checkItem(item.id)" />
-            <div>images: {{ item.images }}</div>
-            <img
-                style="width: 100px; height: 100px"
-                :src="item.images[0]"
-                alt=""
-            />
-            <div>remote_id: {{ item.remote_id }}</div>
-            <div>brand_name: {{ item.brand_name }}</div>
-            <div>title: {{ item.title }}</div>
-            <div>quantity: {{ item.quantity }}</div>
-            <div>price: {{ item.price }}</div>
-            <div>min_price: {{ item.min_price }}</div>
-            <div>max_price: {{ item.max_price ?? "нет" }}</div>
-        </div> -->
+    <section class="products tile">
+        <div class="products-head">
+            <h2 class="products-title">Мои товары</h2>
+            <span
+                >{{ $store.state.pager.limit }} из
+                {{ $store.state.pager.count }}</span
+            >
+        </div>
+        <div v-if="checked_products.length > 0" class="panel flex">
+            <div class="">
+                <div class="checked-count">
+                    Выбрано {{ checked_products.length }} из
+                    {{ get_goods.length }}
+                </div>
+                <button class="btn" @click="deleteCheckedProducts">
+                    Удалить выделенные
+                </button>
+            </div>
+            <div class="">
+                <input type="text" @input="changePriceForAllProducts" />
+                <input type="text" />
+            </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        <div class="">
+                            <input
+                                type="checkbox"
+                                :checked="checked_products.length > 0"
+                                @input="gg"
+                            />
+                        </div>
+                    </th>
+                    <th><div class="">Фото</div></th>
+                    <th><div class="">Артикул продавца</div></th>
+                    <th>
+                        <div class="">
+                            Бренд
+                            <button>Cортировать</button>
+                        </div>
+                    </th>
+                    <th><div class="">Название</div></th>
+                    <th><div class="">Остаток, шт</div></th>
+                    <th><div class="">Текущая цена</div></th>
+                    <th><div class="">Минимальная цена</div></th>
+                    <th><div class="">Максимальная цена</div></th>
+                    <th><div class="">Удалить</div></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in get_goods" :key="item.id">
+                    <td>
+                        <div class="">
+                            <input
+                                type="checkbox"
+                                :checked="checked_products.includes(item)"
+                                @change="checkItem(item)"
+                            />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="">
+                            <img
+                                style="width: 100px; height: 100px"
+                                :src="item.images[0]"
+                                alt=""
+                            />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="">
+                            <div>{{ item.remote_id }}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div>{{ item.brand_name }}</div>
+                    </td>
+                    <td>
+                        <div>{{ item.title }}</div>
+                    </td>
+                    <td>
+                        <div>{{ item.quantity }}</div>
+                    </td>
+                    <td>
+                        <div>{{ item.price }}</div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ item.min_price }}
+                            <input v-model="item.min_price" type="text" />
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            {{ item.max_price }}
+                            <input v-model="item.max_price" type="text" />
+                        </div>
+                    </td>
+                    <td>garb</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="paginator">
+            <a
+                v-for="p in $store.getters.get_pager_count"
+                :key="p"
+                class="prev"
+                href="#"
+                @click.prevent="setCurrentPage(p)"
+                >{{ p }}</a
+            >
+        </div>
     </section>
 </template>
 
@@ -35,20 +130,109 @@ export default {
         },
     },
     methods: {
+        async setCurrentPage(page_number) {
+            this.$store.commit("SET_CURRENT_PAGE", page_number)
+            await this.$store.dispatch("getProducts")
+        },
+        async pagen(vector) {
+            await this.$store.dispatch("getProducts", vector)
+        },
+        gg() {
+            this.checked_products = [...this.get_goods]
+            console.log("fgf")
+        },
+        changePriceForAllProducts(e) {
+            this.checked_products.forEach(
+                (el) => (el.min_price = e.target.value)
+            )
+        },
         async getProducts() {
             await this.$store.dispatch("getProducts")
         },
-        checkItem(id) {
-            let index = this.checked_products.indexOf(id)
+        checkItem(item) {
+            let index = this.checked_products.indexOf(item)
             if (index !== -1) {
                 this.checked_products.splice(index, 1)
                 return
             }
-            this.checked_products.push(id)
+            this.checked_products.push(item)
         },
         deleteCheckedProducts() {
             this.$store.dispatch("deleteCheckedProducts", this.checked_products)
         },
     },
+    async mounted() {
+        await this.$store.dispatch("getProducts")
+    },
 }
 </script>
+<style lang="scss">
+table {
+    width: 100%;
+}
+.products-item {
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 1rem;
+}
+.products-item * {
+    text-align: left;
+}
+
+.table-head {
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.panel {
+    background: $gray;
+}
+
+.paginator {
+    max-width: 480px;
+    padding: 10px;
+    margin: 30px auto;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.paginator a,
+.paginator span {
+    display: inline-block;
+    min-width: 20px;
+    height: 40px;
+    padding: 0 10px;
+    line-height: 40px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    background: #8f3d93;
+}
+
+.paginator .prev {
+    margin-right: 20px;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+
+.paginator .next {
+    margin-left: 20px;
+    text-indent: -1000px;
+    background-repeat: no-repeat;
+    background-position: 0 -40px;
+}
+
+.paginator .current {
+    background-color: #4dd33f;
+}
+
+.paginator .disabled {
+    opacity: 0.3;
+}
+
+.paginator a:hover {
+    background-color: #4dd33f;
+}
+</style>
