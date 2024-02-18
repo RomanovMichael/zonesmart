@@ -125,8 +125,13 @@ export default new Vuex.Store({
                 }
             }
         },
-        deleteCheckedProducts(state, data) {
-            console.log(`Удалены элементы: ${data}`)
+        deleteSelectedProducts({ state }) {
+            const deleted_products_ids = []
+
+            state.products.forEach((item) => {
+                if (item.selected) deleted_products_ids.push(item.id)
+            })
+            console.log(`Удалены элементы: ${deleted_products_ids}`)
         },
     },
     modules: {},

@@ -12,13 +12,13 @@
         </div>
         <div v-if="all_is_selected" class="panel flex">
             <div class="">
-                <!-- <div class="checked-count">
-                    Выбрано {{ checked_products.length }} из
+                <div class="checked-count">
+                    Выбрано {{ all_is_selected }} из
                     {{ get_goods.length }}
-                </div> -->
-                <!-- <button class="btn" @click="deleteCheckedProducts">
+                </div>
+                <button class="btn" @click="deleteSelectedProducts">
                     Удалить выделенные
-                </button> -->
+                </button>
             </div>
             <!-- <div class="">
                 <input type="text" @input="changePriceForAllProducts" />
@@ -207,9 +207,9 @@ export default {
         //     }
         //     this.checked_products.push(item)
         // },
-        // deleteCheckedProducts() {
-        //     this.$store.dispatch("deleteCheckedProducts", this.checked_products)
-        // },
+        deleteSelectedProducts() {
+            this.$store.dispatch("deleteSelectedProducts")
+        },
     },
     async mounted() {
         await this.$store.dispatch("getProducts")
