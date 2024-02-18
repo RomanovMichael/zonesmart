@@ -20,10 +20,16 @@
                     Удалить выделенные
                 </button>
             </div>
-            <!-- <div class="">
-                <input type="text" @input="changePriceForAllProducts" />
-                <input type="text" />
-            </div> -->
+            <div class="">
+                <input
+                    type="text"
+                    @input="setPriceForSelected($event, 'min_price')"
+                />
+                <input
+                    type="text"
+                    @input="setPriceForSelected($event, 'max_price')"
+                />
+            </div>
         </div>
         <table>
             <thead>
@@ -174,6 +180,10 @@ export default {
         },
     },
     methods: {
+        // Получение списка продуктов
+        async getProducts() {
+            await this.$store.dispatch("getProducts")
+        },
         // Выделение всех элементов
         toggleAllProducts(e) {
             const flag = e.target.checked
@@ -182,6 +192,16 @@ export default {
         // Выделение одного элемента
         toggleProduct(id) {
             this.$store.commit("UPDATE_IS_SELECTED", id)
+        },
+        // Удаление элементов
+        deleteSelectedProducts() {
+            this.$store.dispatch("deleteSelectedProducts")
+        },
+        // Изменение цены для выделенных элементов
+        setPriceForSelected(event, type) {
+            const price_type = type
+            const value = event.target.value
+            this.$store.commit("SET_PRICE_FOR_SELECTED", { price_type, value })
         },
         async setCurrentPage(page_number) {
             this.$store.commit("SET_CURRENT_PAGE", page_number)
@@ -195,21 +215,7 @@ export default {
         //     this.checked_products.forEach(
         //         (el) => (el.min_price = e.target.value)
         //     )
-        // },
-        async getProducts() {
-            await this.$store.dispatch("getProducts")
-        },
-        // checkItem(item) {
-        //     const index = this.checked_products.indexOf(item)
-        //     if (index !== -1) {
-        //         this.checked_products.splice(index, 1)
-        //         return
-        //     }
-        //     this.checked_products.push(item)
-        // },
-        deleteSelectedProducts() {
-            this.$store.dispatch("deleteSelectedProducts")
-        },
+        // }
     },
     async mounted() {
         await this.$store.dispatch("getProducts")

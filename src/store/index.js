@@ -15,10 +15,12 @@ export default new Vuex.Store({
     },
     getters: {
         get_goods: (state) => state.products ?? [],
+        is_authorized(state) {
+            return state.user_tokens?.access ? state.user_tokens.access : false
+        },
         get_selected_products(state) {
             return state.products.filter((item) => item.selected)
         },
-        is_authorized: (state) => !!state.user_tokens.access,
         get_pager_count(state) {
             return Math.ceil(state.pager.count / state.pager.limit)
         },
@@ -38,6 +40,14 @@ export default new Vuex.Store({
         // Установка выделения для всех элементов
         UPDATE_ALL_IS_SELECTED(state, flag) {
             state.products.forEach((item) => (item.selected = flag))
+        },
+        // Изменение значения цены
+        SET_PRICE_FOR_SELECTED(state, { price_type, value }) {
+            state.products.forEach((item) => {
+                if (item.selected) {
+                    item[price_type] = value
+                }
+            })
         },
         REFRESH_USER_INFO(state, data) {
             state.user_tokens.access = data.access
@@ -116,7 +126,7 @@ export default new Vuex.Store({
                 commit("UPDATE_PRODUCTS", goods)
                 commit("UPDATE_PAGER", response.data.count)
             } catch (err) {
-                console.log(err)
+                // console.log(err)
                 if (err.response.status === 401) {
                     await this.dispatch(
                         "refreshUserInfo",
