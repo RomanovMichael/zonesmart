@@ -5,7 +5,7 @@
             <div class="products-title-wrap flex --align-center">
                 <button type="button"><RootIcon name="QuestionIcon" /></button>
                 <span
-                    >{{ $store.state.pager.limit }} из
+                    >{{ $store.state.pager.rest_count }} из
                     {{ $store.state.pager.count }}</span
                 >
             </div>
@@ -22,10 +22,12 @@
             </div>
             <div class="">
                 <input
+                    v-model="min_price_setter"
                     type="text"
                     @input="setPriceForSelected($event, 'min_price')"
                 />
                 <input
+                    v-model="max_price_setter"
                     type="text"
                     @input="setPriceForSelected($event, 'max_price')"
                 />
@@ -70,7 +72,6 @@
                             <button><RootIcon name="ArrowIcon" /></button>
                         </div>
                     </th>
-
                     <th>
                         <div class="flex --align-center">
                             <div class="">Максимальная цена</div>
@@ -171,12 +172,28 @@ import RootIcon from "@/assets/icons/RootIcon"
 export default {
     name: "TheProducts",
     components: { RootIcon },
+    data() {
+        return {
+            min_price_setter: "",
+            max_price_setter: "",
+        }
+    },
     computed: {
         get_goods() {
             return this.$store.getters["get_goods"]
         },
         all_is_selected() {
             return this.$store.getters.get_selected_products.length
+        },
+    },
+    watch: {
+        "$store.getters.get_selected_products": function () {
+            if (this.min_price_setter !== "") {
+                this.setPriceForSelected("min_price", this.min_price_setter)
+            }
+            if (this.max_price_setter !== "") {
+                this.setPriceForSelected("max_price", this.max_price_setter)
+            }
         },
     },
     methods: {
@@ -210,12 +227,6 @@ export default {
         async pagen(vector) {
             await this.$store.dispatch("getProducts", vector)
         },
-
-        // changePriceForAllProducts(e) {
-        //     this.checked_products.forEach(
-        //         (el) => (el.min_price = e.target.value)
-        //     )
-        // }
     },
     async mounted() {
         await this.$store.dispatch("getProducts")

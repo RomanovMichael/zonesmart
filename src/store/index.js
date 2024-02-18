@@ -7,9 +7,10 @@ export default new Vuex.Store({
     state: {
         user_tokens: JSON.parse(localStorage.getItem("user_tokens")) || null,
         pager: {
-            count: null,
+            count: 0,
             limit: 10,
             current: 1,
+            rest_count: 0,
         },
         products: [],
     },
@@ -55,6 +56,9 @@ export default new Vuex.Store({
         UPDATE_PRODUCTS(state, data) {
             state.products = data
         },
+        SET_COUNT_REST(state, count) {
+            state.pager.rest_count = count
+        },
         UPDATE_PAGER(state, data) {
             state.pager.count = data
         },
@@ -71,7 +75,6 @@ export default new Vuex.Store({
                         ...user_info,
                     }
                 )
-                console.log(response)
                 commit("SET_USER_TOKENS", response.data)
                 localStorage.setItem(
                     "user_tokens",
@@ -92,7 +95,6 @@ export default new Vuex.Store({
                         refresh: refresh_token,
                     }
                 )
-                console.log(response)
                 commit("REFRESH_USER_INFO", response.data)
                 localStorage.setItem(
                     "user_tokens",
@@ -109,7 +111,14 @@ export default new Vuex.Store({
             try {
                 const params = new URLSearchParams()
                 params.append("limit", state.pager.limit)
-                params.append("offset", state.pager.current)
+                if (state.pager.current !== 1) {
+                    params.append(
+                        "offset",
+                        (state.pager.current - 1) * state.pager.limit
+                    )
+                } else {
+                    params.append("offset", state.pager.current)
+                }
 
                 const response = await axios.get(
                     `https://dev-ar.zonesmart.com/api/product/?${params}`,
@@ -124,9 +133,9 @@ export default new Vuex.Store({
                     return item
                 })
                 commit("UPDATE_PRODUCTS", goods)
+                commit("SET_COUNT_REST", response.data.results.length)
                 commit("UPDATE_PAGER", response.data.count)
             } catch (err) {
-                // console.log(err)
                 if (err.response.status === 401) {
                     await this.dispatch(
                         "refreshUserInfo",
