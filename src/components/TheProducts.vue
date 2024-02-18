@@ -1,11 +1,14 @@
 <template>
     <section class="products tile">
-        <div class="products-head">
+        <div class="products-head flex --align-center">
             <h2 class="products-title">Мои товары</h2>
-            <span
-                >{{ $store.state.pager.limit }} из
-                {{ $store.state.pager.count }}</span
-            >
+            <div class="products-title-wrap flex --align-center">
+                <button type="button"><RootIcon name="QuestionIcon" /></button>
+                <span
+                    >{{ $store.state.pager.limit }} из
+                    {{ $store.state.pager.count }}</span
+                >
+            </div>
         </div>
         <div v-if="checked_products.length > 0" class="panel flex">
             <div class="">
@@ -37,16 +40,37 @@
                     <th><div class="">Фото</div></th>
                     <th><div class="">Артикул продавца</div></th>
                     <th>
-                        <div class="">
-                            Бренд
-                            <button>Cортировать</button>
+                        <div class="flex --align-center">
+                            <div>Бренд</div>
+                            <button><RootIcon name="ArrowIcon" /></button>
                         </div>
                     </th>
                     <th><div class="">Название</div></th>
-                    <th><div class="">Остаток, шт</div></th>
-                    <th><div class="">Текущая цена</div></th>
-                    <th><div class="">Минимальная цена</div></th>
-                    <th><div class="">Максимальная цена</div></th>
+                    <th>
+                        <div class="flex --align-center">
+                            <div class="">Остаток, шт</div>
+                            <button><RootIcon name="ArrowIcon" /></button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="flex --align-center">
+                            <div class="">Текущая цена</div>
+                            <button><RootIcon name="ArrowIcon" /></button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="flex --align-center">
+                            <div class="">Минимальная цена</div>
+                            <button><RootIcon name="ArrowIcon" /></button>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="flex --align-center">
+                            <div class="">Максимальная цена</div>
+                            <button><RootIcon name="ArrowIcon" /></button>
+                        </div>
+                    </th>
                     <th><div class="">Удалить</div></th>
                 </tr>
             </thead>
@@ -63,8 +87,13 @@
                     </td>
                     <td>
                         <div class="">
+                            <RootIcon
+                                v-if="!item.images[0]"
+                                name="NophotoIcon"
+                            />
                             <img
-                                style="width: 100px; height: 100px"
+                                v-else
+                                style="width: 50px; height: 50px"
                                 :src="item.images[0]"
                                 alt=""
                             />
@@ -88,18 +117,32 @@
                         <div>{{ item.price }}</div>
                     </td>
                     <td>
-                        <div>
-                            {{ item.min_price }}
-                            <input v-model="item.min_price" type="text" />
+                        <div class="input input--sm">
+                            <div class="input-wrap">
+                                {{ item.min_price }}
+                                <input
+                                    v-model="item.min_price"
+                                    class="input-inner"
+                                    type="text"
+                                />
+                            </div>
                         </div>
                     </td>
                     <td>
-                        <div>
-                            {{ item.max_price }}
-                            <input v-model="item.max_price" type="text" />
+                        <div class="input input--sm">
+                            <div class="input-wrap">
+                                {{ item.max_price }}
+                                <input
+                                    v-model="item.max_price"
+                                    class="input-inner"
+                                    type="text"
+                                />
+                            </div>
                         </div>
                     </td>
-                    <td>garb</td>
+                    <td>
+                        <button><RootIcon name="DeleteIcon" /></button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -117,8 +160,11 @@
 </template>
 
 <script>
+import RootIcon from "@/assets/icons/RootIcon"
+
 export default {
     name: "TheProducts",
+    components: { RootIcon },
     data() {
         return {
             checked_products: [],
@@ -167,8 +213,42 @@ export default {
 }
 </script>
 <style lang="scss">
+.products {
+    max-width: 100rem;
+}
+
+thead,
+tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+th {
+    color: $gray;
+    font-weight: 400;
+}
+
+tr {
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    height: 3.75rem;
+}
+
+// .table-row {
+
+// }
+
 table {
     width: 100%;
+    border-collapse: collapse;
+    font-size: 0.937rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: left;
+    overflow-x: scroll;
+    & .flex {
+        flex-wrap: nowrap;
+    }
 }
 .products-item {
     flex-wrap: nowrap;
@@ -191,7 +271,7 @@ table {
 .paginator {
     max-width: 480px;
     padding: 10px;
-    margin: 30px auto;
+    margin: auto;
     white-space: nowrap;
     text-align: center;
 }

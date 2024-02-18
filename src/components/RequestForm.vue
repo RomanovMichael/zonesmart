@@ -71,7 +71,6 @@ export default {
 .request-form {
     &-wrap {
         width: 26.875rem;
-        padding: 2.5rem 2.5rem 3.75rem;
     }
 
     &-input {

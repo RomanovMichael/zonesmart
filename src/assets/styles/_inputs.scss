@@ -14,8 +14,8 @@
         flex-wrap: nowrap;
     }
 
-    &--sm {
-        &-wrap {
+    &.input--sm {
+        & .input-wrap {
             height: 1.875rem;
         }
     }
