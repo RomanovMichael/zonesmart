@@ -6,11 +6,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         user_tokens: JSON.parse(localStorage.getItem("user_tokens")) || null,
-
-        // user: {
-        //     access: null,
-        //     refresh: null,
-        // },
         pager: {
             count: null,
             limit: 10,
@@ -20,6 +15,9 @@ export default new Vuex.Store({
     },
     getters: {
         get_goods: (state) => state.products ?? [],
+        get_selected_products(state) {
+            return state.products.filter((item) => item.selected)
+        },
         is_authorized: (state) => !!state.user_tokens.access,
         get_pager_count(state) {
             return Math.ceil(state.pager.count / state.pager.limit)
@@ -28,6 +26,18 @@ export default new Vuex.Store({
     mutations: {
         SET_USER_TOKENS(state, data) {
             state.user_tokens = data
+        },
+        // Установка выделения одного элемента
+        UPDATE_IS_SELECTED(state, id) {
+            state.products.forEach((item) => {
+                if (item.id === id) {
+                    item.selected = !item.selected
+                }
+            })
+        },
+        // Установка выделения для всех элементов
+        UPDATE_ALL_IS_SELECTED(state, flag) {
+            state.products.forEach((item) => (item.selected = flag))
         },
         REFRESH_USER_INFO(state, data) {
             state.user_tokens.access = data.access
@@ -99,8 +109,12 @@ export default new Vuex.Store({
                         },
                     }
                 )
+                const goods = response.data.results.map((item) => {
+                    item.selected = false
+                    return item
+                })
+                commit("UPDATE_PRODUCTS", goods)
                 commit("UPDATE_PAGER", response.data.count)
-                commit("UPDATE_PRODUCTS", response.data.results)
             } catch (err) {
                 console.log(err)
                 if (err.response.status === 401) {

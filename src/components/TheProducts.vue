@@ -10,20 +10,20 @@
                 >
             </div>
         </div>
-        <div v-if="checked_products.length > 0" class="panel flex">
+        <div v-if="all_is_selected" class="panel flex">
             <div class="">
-                <div class="checked-count">
+                <!-- <div class="checked-count">
                     Выбрано {{ checked_products.length }} из
                     {{ get_goods.length }}
-                </div>
-                <button class="btn" @click="deleteCheckedProducts">
+                </div> -->
+                <!-- <button class="btn" @click="deleteCheckedProducts">
                     Удалить выделенные
-                </button>
+                </button> -->
             </div>
-            <div class="">
+            <!-- <div class="">
                 <input type="text" @input="changePriceForAllProducts" />
                 <input type="text" />
-            </div>
+            </div> -->
         </div>
         <table>
             <thead>
@@ -32,8 +32,8 @@
                         <div class="">
                             <input
                                 type="checkbox"
-                                :checked="checked_products.length > 0"
-                                @input="gg"
+                                :checked="all_is_selected"
+                                @input="toggleAllProducts"
                             />
                         </div>
                     </th>
@@ -80,8 +80,8 @@
                         <div class="">
                             <input
                                 type="checkbox"
-                                :checked="checked_products.includes(item)"
-                                @change="checkItem(item)"
+                                :checked="item.selected"
+                                @change="toggleProduct(item.id)"
                             />
                         </div>
                     </td>
@@ -165,17 +165,24 @@ import RootIcon from "@/assets/icons/RootIcon"
 export default {
     name: "TheProducts",
     components: { RootIcon },
-    data() {
-        return {
-            checked_products: [],
-        }
-    },
     computed: {
         get_goods() {
             return this.$store.getters["get_goods"]
         },
+        all_is_selected() {
+            return this.$store.getters.get_selected_products.length
+        },
     },
     methods: {
+        // Выделение всех элементов
+        toggleAllProducts(e) {
+            const flag = e.target.checked
+            this.$store.commit("UPDATE_ALL_IS_SELECTED", flag)
+        },
+        // Выделение одного элемента
+        toggleProduct(id) {
+            this.$store.commit("UPDATE_IS_SELECTED", id)
+        },
         async setCurrentPage(page_number) {
             this.$store.commit("SET_CURRENT_PAGE", page_number)
             await this.$store.dispatch("getProducts")
@@ -183,29 +190,26 @@ export default {
         async pagen(vector) {
             await this.$store.dispatch("getProducts", vector)
         },
-        gg() {
-            this.checked_products = [...this.get_goods]
-            console.log("fgf")
-        },
-        changePriceForAllProducts(e) {
-            this.checked_products.forEach(
-                (el) => (el.min_price = e.target.value)
-            )
-        },
+
+        // changePriceForAllProducts(e) {
+        //     this.checked_products.forEach(
+        //         (el) => (el.min_price = e.target.value)
+        //     )
+        // },
         async getProducts() {
             await this.$store.dispatch("getProducts")
         },
-        checkItem(item) {
-            let index = this.checked_products.indexOf(item)
-            if (index !== -1) {
-                this.checked_products.splice(index, 1)
-                return
-            }
-            this.checked_products.push(item)
-        },
-        deleteCheckedProducts() {
-            this.$store.dispatch("deleteCheckedProducts", this.checked_products)
-        },
+        // checkItem(item) {
+        //     const index = this.checked_products.indexOf(item)
+        //     if (index !== -1) {
+        //         this.checked_products.splice(index, 1)
+        //         return
+        //     }
+        //     this.checked_products.push(item)
+        // },
+        // deleteCheckedProducts() {
+        //     this.$store.dispatch("deleteCheckedProducts", this.checked_products)
+        // },
     },
     async mounted() {
         await this.$store.dispatch("getProducts")
