@@ -1,8 +1,22 @@
 import Vuex from "vuex"
 import Vue from "vue"
 import axios from "axios"
+import router from "@/router"
 
 Vue.use(Vuex)
+const getProductsParams = (state) => {
+    const params = new URLSearchParams()
+
+    params.append("limit", state.pager.limit)
+
+    if (state.pager.current !== 1) {
+        params.append("offset", (state.pager.current - 1) * state.pager.limit)
+    } else {
+        params.append("offset", state.pager.current)
+    }
+
+    return params
+}
 export default new Vuex.Store({
     state: {
         user_tokens: JSON.parse(localStorage.getItem("user_tokens")) || null,
@@ -11,13 +25,16 @@ export default new Vuex.Store({
             limit: 10,
             current: 1,
             rest_count: 0,
+            prev: null,
+            next: null,
         },
         products: [],
+        login_error_code: null,
     },
     getters: {
         get_goods: (state) => state.products ?? [],
         is_authorized(state) {
-            return state.user_tokens?.access ? state.user_tokens.access : false
+            return state.user_tokens?.access ? true : false
         },
         get_selected_products(state) {
             return state.products.filter((item) => item.selected)
@@ -60,10 +77,18 @@ export default new Vuex.Store({
             state.pager.rest_count = count
         },
         UPDATE_PAGER(state, data) {
-            state.pager.count = data
+            state.pager.count = data.count
+            state.pager.prev = data.previous
+            state.pager.next = data.next
         },
         SET_CURRENT_PAGE(state, data) {
             state.pager.current = data
+        },
+        SET_LOGIN_ERROR_CODE(state, error_code) {
+            state.login_error_code = error_code
+        },
+        RESET_ERROR_CODE(state) {
+            state.login_error_code = null
         },
     },
     actions: {
@@ -83,7 +108,9 @@ export default new Vuex.Store({
                         refresh: state.user_tokens.refresh,
                     })
                 )
+                router.push("/")
             } catch (err) {
+                commit("SET_LOGIN_ERROR_CODE", err.response.status)
                 console.log(err)
             }
         },
@@ -100,25 +127,17 @@ export default new Vuex.Store({
                     "user_tokens",
                     JSON.stringify({
                         access: state.user_tokens.access,
-                        refresh: state.user.refresh,
+                        refresh: state.user_tokens.refresh,
                     })
                 )
+                await this.dispatch("getProducts")
             } catch (err) {
                 console.log(err)
             }
         },
         async getProducts({ commit, state }) {
             try {
-                const params = new URLSearchParams()
-                params.append("limit", state.pager.limit)
-                if (state.pager.current !== 1) {
-                    params.append(
-                        "offset",
-                        (state.pager.current - 1) * state.pager.limit
-                    )
-                } else {
-                    params.append("offset", state.pager.current)
-                }
+                const params = getProductsParams(state)
 
                 const response = await axios.get(
                     `https://dev-ar.zonesmart.com/api/product/?${params}`,
@@ -128,13 +147,14 @@ export default new Vuex.Store({
                         },
                     }
                 )
+
                 const goods = response.data.results.map((item) => {
                     item.selected = false
                     return item
                 })
                 commit("UPDATE_PRODUCTS", goods)
                 commit("SET_COUNT_REST", response.data.results.length)
-                commit("UPDATE_PAGER", response.data.count)
+                commit("UPDATE_PAGER", response.data)
             } catch (err) {
                 if (err.response.status === 401) {
                     await this.dispatch(

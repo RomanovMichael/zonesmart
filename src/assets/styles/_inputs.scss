@@ -17,6 +17,11 @@
     &.input--sm {
         & .input-wrap {
             height: 1.875rem;
+            width: 8.375rem;
+        }
+
+        & .input-inner {
+            padding: 0 0.625rem;
         }
     }
 

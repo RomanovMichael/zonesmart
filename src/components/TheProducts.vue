@@ -10,6 +10,39 @@
                 >
             </div>
         </div>
+        <div class="products-filters filters">
+            <div class="filters-text">
+                <p class="filters-text-item">
+                    Добавьте товары вашего магазина из одной товарной и ценовой
+                    категории (разница цены не больше 15%)
+                </p>
+                <br />
+                <br />
+                <p class="filters-text-item">
+                    Для добавления нескольких товаров введите несколько
+                    артикулов через запятую или используя клавишу Enter
+                </p>
+            </div>
+            <div class="filters-control flex">
+                <div class="input">
+                    <label class="input-label caption"
+                        >Добавление товаров</label
+                    >
+                    <div class="input-wrap">
+                        <input
+                            class="input-inner"
+                            type="text"
+                            placeholder="Введите артикул продавца, артикул WB или ссылку на товар"
+                        />
+                        <button class="btn" disabled>Добавить</button>
+                    </div>
+                    <label class="input-label caption"
+                        >Например ваши товары: <span>119203059</span>,
+                        <span>124366343</span>, <span>59801844</span></label
+                    >
+                </div>
+            </div>
+        </div>
         <div v-if="all_is_selected" class="panel flex">
             <div class="">
                 <div class="checked-count">
@@ -126,7 +159,6 @@
                     <td>
                         <div class="input input--sm">
                             <div class="input-wrap">
-                                {{ item.min_price }}
                                 <input
                                     v-model="item.min_price"
                                     class="input-inner"
@@ -138,7 +170,6 @@
                     <td>
                         <div class="input input--sm">
                             <div class="input-wrap">
-                                {{ item.max_price }}
                                 <input
                                     v-model="item.max_price"
                                     class="input-inner"
@@ -155,12 +186,27 @@
         </table>
         <div class="paginator">
             <a
+                v-if="$store.state.pager.current !== 1"
+                href="#"
+                @click="setPrevNextPage('prev')"
+                >prev</a
+            >
+            <a
                 v-for="p in $store.getters.get_pager_count"
                 :key="p"
                 class="prev"
                 href="#"
                 @click.prevent="setCurrentPage(p)"
                 >{{ p }}</a
+            >
+            <a
+                v-if="
+                    $store.getters.get_pager_count !==
+                    $store.state.pager.current
+                "
+                href="#"
+                @click="setPrevNextPage('next')"
+                >next</a
             >
         </div>
     </section>
@@ -224,8 +270,10 @@ export default {
             this.$store.commit("SET_CURRENT_PAGE", page_number)
             await this.$store.dispatch("getProducts")
         },
-        async pagen(vector) {
-            await this.$store.dispatch("getProducts", vector)
+        async setPrevNextPage(to) {
+            const current_page = this.$store.state.pager.current
+            const to_page = to === "prev" ? current_page - 1 : current_page + 1
+            await this.setCurrentPage(to_page)
         },
     },
     async mounted() {
@@ -236,6 +284,19 @@ export default {
 <style lang="scss">
 .products {
     max-width: 100rem;
+}
+
+.filters {
+    margin-top: 1.875rem;
+    &-control {
+        margin-top: 1.875rem;
+        .input-wrap {
+            width: 46.615rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+            gap: 1.25rem;
+        }
+    }
 }
 
 thead,

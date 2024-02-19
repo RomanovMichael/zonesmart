@@ -13,10 +13,8 @@
                     type="text",
                     name="email",
                     placeholder="yourmail@mail.ru",
-                    autocomplete="on"
+                    @change="resetErrorCode"
                 )
-            span.input-error
-                | Длиннющий текст ошибки, когда не помещается в одну строку
         .request-form-input.input
             label.input-label.caption(for="password") Пароль
             .input-wrap
@@ -25,14 +23,14 @@
                     type="password",
                     name="pasword",
                     placeholder="Ваш пароль",
-                    autocomplete="on"
+                    @change="resetErrorCode"
                 )
                 button.input-showpass
                     span
                         root-icon(name="EyeIcon")
-            span.input-error Текст ошибки
         .request-form-label.request-form-label--forgot
             router-link.link(to="#") Забыли пароль?
+        span.input-error(v-if="$store.state.login_error_code") {{ error_message }}
         button.request-form-btn.btn.btn--green(:disabled="is_btn_disabled")
             | Войти
 </template>
@@ -51,6 +49,16 @@ export default {
         }
     },
     computed: {
+        error_message() {
+            const { login_error_code } = this.$store.state
+            if (!login_error_code) return null
+            switch (login_error_code) {
+                case 401:
+                    return "Неверный логин или пароль"
+                default:
+                    return "Произошла ошибка"
+            }
+        },
         is_btn_disabled() {
             const { email, password } = this
             let btn_disabled = email == "" || password == ""
@@ -58,10 +66,12 @@ export default {
         },
     },
     methods: {
+        resetErrorCode() {
+            this.$store.commit("RESET_ERROR_CODE")
+        },
         async logIn() {
             const { email, password } = this
-            await this.$store.dispatch("getToken", { email, password })
-            this.$router.push("/")
+            await this.$store.dispatch("getToken", { email, password }).then()
         },
     },
 }
