@@ -1,7 +1,7 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
 import LoginView from "../views/LoginView"
-import ProductsView from "../views/ProductsView"
+import AppView from "../views/AppView"
 import store from "@/store"
 
 Vue.use(VueRouter)
@@ -9,8 +9,8 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: "/",
-        name: "Products",
-        component: ProductsView,
+        name: "App",
+        component: AppView,
         meta: {
             auth: true,
         },

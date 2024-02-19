@@ -20,13 +20,12 @@ const getProductsParams = (state) => {
 export default new Vuex.Store({
     state: {
         user_tokens: JSON.parse(localStorage.getItem("user_tokens")) || null,
+        user_mail: JSON.parse(localStorage.getItem("user_mail")) || null,
         pager: {
             count: 0,
             limit: 10,
             current: 1,
             rest_count: 0,
-            prev: null,
-            next: null,
         },
         products: [],
         login_error_code: null,
@@ -46,6 +45,9 @@ export default new Vuex.Store({
     mutations: {
         SET_USER_TOKENS(state, data) {
             state.user_tokens = data
+        },
+        SET_USER_MAIL(state, address) {
+            state.user_mail = address
         },
         // Установка выделения одного элемента
         UPDATE_IS_SELECTED(state, id) {
@@ -100,7 +102,10 @@ export default new Vuex.Store({
                         ...user_info,
                     }
                 )
+
                 commit("SET_USER_TOKENS", response.data)
+                commit("SET_USER_MAIL", user_info.email)
+
                 localStorage.setItem(
                     "user_tokens",
                     JSON.stringify({
@@ -108,6 +113,11 @@ export default new Vuex.Store({
                         refresh: state.user_tokens.refresh,
                     })
                 )
+                localStorage.setItem(
+                    "user_mail",
+                    JSON.stringify(state.user_mail)
+                )
+
                 router.push("/")
             } catch (err) {
                 commit("SET_LOGIN_ERROR_CODE", err.response.status)
@@ -123,6 +133,7 @@ export default new Vuex.Store({
                     }
                 )
                 commit("REFRESH_USER_INFO", response.data)
+
                 localStorage.setItem(
                     "user_tokens",
                     JSON.stringify({
@@ -130,6 +141,7 @@ export default new Vuex.Store({
                         refresh: state.user_tokens.refresh,
                     })
                 )
+
                 await this.dispatch("getProducts")
             } catch (err) {
                 console.log(err)
@@ -152,6 +164,7 @@ export default new Vuex.Store({
                     item.selected = false
                     return item
                 })
+
                 commit("UPDATE_PRODUCTS", goods)
                 commit("SET_COUNT_REST", response.data.results.length)
                 commit("UPDATE_PAGER", response.data)
@@ -170,6 +183,7 @@ export default new Vuex.Store({
             state.products.forEach((item) => {
                 if (item.selected) deleted_products_ids.push(item.id)
             })
+
             console.log(`Удалены элементы: ${deleted_products_ids}`)
         },
     },

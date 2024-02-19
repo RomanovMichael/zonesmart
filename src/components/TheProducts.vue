@@ -66,124 +66,126 @@
                 />
             </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        <div class="">
-                            <input
-                                type="checkbox"
-                                :checked="all_is_selected"
-                                @input="toggleAllProducts"
-                            />
-                        </div>
-                    </th>
-                    <th><div class="">Фото</div></th>
-                    <th><div class="">Артикул продавца</div></th>
-                    <th>
-                        <div class="flex --align-center">
-                            <div>Бренд</div>
-                            <button><RootIcon name="ArrowIcon" /></button>
-                        </div>
-                    </th>
-                    <th><div class="">Название</div></th>
-                    <th>
-                        <div class="flex --align-center">
-                            <div class="">Остаток, шт</div>
-                            <button><RootIcon name="ArrowIcon" /></button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex --align-center">
-                            <div class="">Текущая цена</div>
-                            <button><RootIcon name="ArrowIcon" /></button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex --align-center">
-                            <div class="">Минимальная цена</div>
-                            <button><RootIcon name="ArrowIcon" /></button>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="flex --align-center">
-                            <div class="">Максимальная цена</div>
-                            <button><RootIcon name="ArrowIcon" /></button>
-                        </div>
-                    </th>
-                    <th><div class="">Удалить</div></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in get_goods" :key="item.id">
-                    <td>
-                        <div class="">
-                            <input
-                                type="checkbox"
-                                :checked="item.selected"
-                                @change="toggleProduct(item.id)"
-                            />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="">
-                            <RootIcon
-                                v-if="!item.images[0]"
-                                name="NophotoIcon"
-                            />
-                            <img
-                                v-else
-                                style="width: 50px; height: 50px"
-                                :src="item.images[0]"
-                                alt=""
-                            />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="">
-                            <div>{{ item.remote_id }}</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div>{{ item.brand_name }}</div>
-                    </td>
-                    <td>
-                        <div>{{ item.title }}</div>
-                    </td>
-                    <td>
-                        <div>{{ item.quantity }}</div>
-                    </td>
-                    <td>
-                        <div>{{ item.price }}</div>
-                    </td>
-                    <td>
-                        <div class="input input--sm">
-                            <div class="input-wrap">
+        <div class="products-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="">
                                 <input
-                                    v-model="item.min_price"
-                                    class="input-inner"
-                                    type="text"
+                                    type="checkbox"
+                                    :checked="all_is_selected"
+                                    @input="toggleAllProducts"
                                 />
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="input input--sm">
-                            <div class="input-wrap">
+                        </th>
+                        <th><div class="">Фото</div></th>
+                        <th><div class="">Артикул продавца</div></th>
+                        <th>
+                            <div class="flex --align-center">
+                                <div>Бренд</div>
+                                <button><RootIcon name="ArrowIcon" /></button>
+                            </div>
+                        </th>
+                        <th><div class="">Название</div></th>
+                        <th>
+                            <div class="flex --align-center">
+                                <div class="">Остаток, шт</div>
+                                <button><RootIcon name="ArrowIcon" /></button>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="flex --align-center">
+                                <div class="">Текущая цена</div>
+                                <button><RootIcon name="ArrowIcon" /></button>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="flex --align-center">
+                                <div class="">Минимальная цена</div>
+                                <button><RootIcon name="ArrowIcon" /></button>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="flex --align-center">
+                                <div class="">Максимальная цена</div>
+                                <button><RootIcon name="ArrowIcon" /></button>
+                            </div>
+                        </th>
+                        <th><div class="">Удалить</div></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in get_goods" :key="item.id">
+                        <td>
+                            <div class="">
                                 <input
-                                    v-model="item.max_price"
-                                    class="input-inner"
-                                    type="text"
+                                    type="checkbox"
+                                    :checked="item.selected"
+                                    @change="toggleProduct(item.id)"
                                 />
                             </div>
-                        </div>
-                    </td>
-                    <td>
-                        <button><RootIcon name="DeleteIcon" /></button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                        <td>
+                            <div class="">
+                                <RootIcon
+                                    v-if="!item.images[0]"
+                                    name="NophotoIcon"
+                                />
+                                <img
+                                    v-else
+                                    style="width: 50px; height: 50px"
+                                    :src="item.images[0]"
+                                    alt=""
+                                />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="">
+                                <div>{{ item.remote_id }}</div>
+                            </div>
+                        </td>
+                        <td>
+                            <div>{{ item.brand_name }}</div>
+                        </td>
+                        <td>
+                            <div>{{ item.title }}</div>
+                        </td>
+                        <td>
+                            <div>{{ item.quantity }}</div>
+                        </td>
+                        <td>
+                            <div>{{ item.price }}</div>
+                        </td>
+                        <td>
+                            <div class="input input--sm">
+                                <div class="input-wrap">
+                                    <input
+                                        v-model="item.min_price"
+                                        class="input-inner"
+                                        type="text"
+                                    />
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input input--sm">
+                                <div class="input-wrap">
+                                    <input
+                                        v-model="item.max_price"
+                                        class="input-inner"
+                                        type="text"
+                                    />
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button><RootIcon name="DeleteIcon" /></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="paginator">
             <a
                 v-if="$store.state.pager.current !== 1"
@@ -284,6 +286,9 @@ export default {
 <style lang="scss">
 .products {
     max-width: 100rem;
+    &-table {
+        margin-top: 1.875rem;
+    }
 }
 
 .filters {
