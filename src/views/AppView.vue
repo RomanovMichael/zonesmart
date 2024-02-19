@@ -8,6 +8,7 @@
 <script>
 import TheProducts from "../components/TheProducts"
 import AppNav from "../components/AppNav"
+
 export default {
     name: "AppView",
     components: {

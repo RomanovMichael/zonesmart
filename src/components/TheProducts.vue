@@ -23,7 +23,7 @@
                     артикулов через запятую или используя клавишу Enter
                 </p>
             </div>
-            <div class="filters-control flex">
+            <div class="filters-control flex --just-space">
                 <div class="input">
                     <label class="input-label caption"
                         >Добавление товаров</label
@@ -41,6 +41,7 @@
                         <span>124366343</span>, <span>59801844</span></label
                     >
                 </div>
+                <AppPager />
             </div>
         </div>
         <div v-if="all_is_selected" class="panel flex">
@@ -186,40 +187,16 @@
                 </tbody>
             </table>
         </div>
-        <div class="paginator">
-            <a
-                v-if="$store.state.pager.current !== 1"
-                href="#"
-                @click="setPrevNextPage('prev')"
-                >prev</a
-            >
-            <a
-                v-for="p in $store.getters.get_pager_count"
-                :key="p"
-                class="prev"
-                href="#"
-                @click.prevent="setCurrentPage(p)"
-                >{{ p }}</a
-            >
-            <a
-                v-if="
-                    $store.getters.get_pager_count !==
-                    $store.state.pager.current
-                "
-                href="#"
-                @click="setPrevNextPage('next')"
-                >next</a
-            >
-        </div>
     </section>
 </template>
 
 <script>
 import RootIcon from "@/assets/icons/RootIcon"
+import AppPager from "./AppPager"
 
 export default {
     name: "TheProducts",
-    components: { RootIcon },
+    components: { RootIcon, AppPager },
     data() {
         return {
             min_price_setter: "",
@@ -267,15 +244,6 @@ export default {
             const price_type = type
             const value = event.target.value
             this.$store.commit("SET_PRICE_FOR_SELECTED", { price_type, value })
-        },
-        async setCurrentPage(page_number) {
-            this.$store.commit("SET_CURRENT_PAGE", page_number)
-            await this.$store.dispatch("getProducts")
-        },
-        async setPrevNextPage(to) {
-            const current_page = this.$store.state.pager.current
-            const to_page = to === "prev" ? current_page - 1 : current_page + 1
-            await this.setCurrentPage(to_page)
         },
     },
     async mounted() {
@@ -353,53 +321,5 @@ table {
 
 .panel {
     background: $gray;
-}
-
-.paginator {
-    max-width: 480px;
-    padding: 10px;
-    margin: auto;
-    white-space: nowrap;
-    text-align: center;
-}
-
-.paginator a,
-.paginator span {
-    display: inline-block;
-    min-width: 20px;
-    height: 40px;
-    padding: 0 10px;
-    line-height: 40px;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    text-align: center;
-    vertical-align: middle;
-    background: #8f3d93;
-}
-
-.paginator .prev {
-    margin-right: 20px;
-    background-repeat: no-repeat;
-    background-position: 0 0;
-}
-
-.paginator .next {
-    margin-left: 20px;
-    text-indent: -1000px;
-    background-repeat: no-repeat;
-    background-position: 0 -40px;
-}
-
-.paginator .current {
-    background-color: #4dd33f;
-}
-
-.paginator .disabled {
-    opacity: 0.3;
-}
-
-.paginator a:hover {
-    background-color: #4dd33f;
 }
 </style>
