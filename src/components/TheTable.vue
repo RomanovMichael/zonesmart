@@ -55,18 +55,20 @@ table.table
             td
             td
                 .table-cell
-                    .checked-count
+                    .checked-count 
+                        |
+                        | Выбрано
                         | {{ all_is_selected }}
+                        | из
                         | {{ get_goods.length }}
             td
                 .table-cell
                     button.panel-btn(@click="deleteSelectedProducts")
                         span
                             root-icon(name="DeleteSmallIcon")
-                        |
-                        |
+                        | Удалить выделенные
             td
-                .table-cell 
+                .table-cell Для всех выделенных
             td
                 .table-cell
                     .input.input--sm
@@ -130,7 +132,10 @@ table.table
                 .table-cell
                     .table-cell-inner
                         | {{ item.price | fixTo }}
-                        span.rouble &#x20BD;
+                        span.rouble 
+                            |
+                            |
+                            | ₽
             td
                 .table-cell
                     .input.input--sm
@@ -338,7 +343,7 @@ export default {
         background: #dee1e3;
         border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 
-        &-btn {
+        & .panel-btn {
             vertical-align: middle;
             background-color: $button_gray;
             border-radius: 0.375rem;
