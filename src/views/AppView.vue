@@ -1,7 +1,7 @@
 <template lang="pug">
 main.main
-    appnav
-        appproducts
+    app-nav
+    app-products
 </template>
 
 <script>
