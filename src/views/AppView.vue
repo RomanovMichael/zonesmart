@@ -1,8 +1,7 @@
-<template>
-    <main class="main">
-        <AppNav />
-        <AppProducts />
-    </main>
+<template lang="pug">
+main.main
+    appnav
+        appproducts
 </template>
 
 <script>
