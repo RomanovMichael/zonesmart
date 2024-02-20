@@ -59,7 +59,9 @@ export default {
     computed: {
         error_message() {
             const { login_error_code } = this.$store.state
+
             if (!login_error_code) return null
+
             switch (login_error_code) {
                 case 401:
                     return "Неверный логин или пароль"
@@ -70,6 +72,7 @@ export default {
         is_btn_disabled() {
             const { email, password } = this
             let btn_disabled = email == "" || password == ""
+
             return btn_disabled
         },
     },
@@ -83,6 +86,7 @@ export default {
         },
         async logIn() {
             const { email, password } = this
+
             await this.$store.dispatch("getToken", { email, password }).then()
         },
     },

@@ -57,6 +57,9 @@ table.table
                 .table-cell
                     .checked-count 
                         |
+                        |
+                        |
+                        |
                         | Выбрано
                         | {{ all_is_selected }}
                         | из
@@ -135,6 +138,9 @@ table.table
                         span.rouble 
                             |
                             |
+                            |
+                            |
+                            |
                             | ₽
             td
                 .table-cell
@@ -179,6 +185,7 @@ export default {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                 }).format(val)
+
                 return val
             }
         },
@@ -196,6 +203,7 @@ export default {
             if (this.min_price_setter !== "") {
                 this.setPriceForSelected("min_price", this.min_price_setter)
             }
+
             if (this.max_price_setter !== "") {
                 this.setPriceForSelected("max_price", this.max_price_setter)
             }

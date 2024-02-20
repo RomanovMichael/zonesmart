@@ -2,7 +2,7 @@
 .app-pager.flex.--just-center
     .app-pager-bullets.flex
         button.app-pager-bullet(
-            :class="[`${is_prev_disabled}`]"
+            :class="[`${is_prev_disabled}`]",
             @click="setPrevNextPage('prev')"
         )
             span
@@ -10,13 +10,14 @@
         button.app-pager-bullet(
             v-for="num in $store.getters.get_pager_count",
             :key="num",
-            @click.prevent="setCurrentPage(num)"
+            @click.prevent="setCurrentPage(num)",
             :class="[`${num === current_page ? 'is-current' : ''}`]"
         )
             | {{ num }}
         button.app-pager-bullet(
-            :class="[`${is_next_disabled}`]"
-            @click="setPrevNextPage('next')")
+            :class="[`${is_next_disabled}`]",
+            @click="setPrevNextPage('next')"
+        )
             span
                 root-icon(name="ArrowLeftIcon")
 </template>
@@ -29,11 +30,13 @@ export default {
         is_prev_disabled() {
             const disabled_class_name =
                 this.current_page === 1 ? "is-disabled" : ""
+
             return disabled_class_name
         },
         is_next_disabled() {
             const disabled_class_name =
                 this.current_page === this.pager_count ? "is-disabled" : ""
+
             return disabled_class_name
         },
         pager_count() {
@@ -46,11 +49,13 @@ export default {
     methods: {
         async setCurrentPage(page_number) {
             this.$store.commit("SET_CURRENT_PAGE", page_number)
+
             await this.$store.dispatch("getProducts")
         },
         async setPrevNextPage(to) {
             const current_page = this.$store.state.pager.current
             const to_page = to === "prev" ? current_page - 1 : current_page + 1
+
             await this.setCurrentPage(to_page)
         },
     },

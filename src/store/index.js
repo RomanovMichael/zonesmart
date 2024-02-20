@@ -4,6 +4,7 @@ import axios from "axios"
 import router from "@/router"
 
 Vue.use(Vuex)
+
 const getProductsParams = (state) => {
     const params = new URLSearchParams()
 
@@ -17,6 +18,7 @@ const getProductsParams = (state) => {
 
     return params
 }
+
 export default new Vuex.Store({
     state: {
         user_tokens: JSON.parse(localStorage.getItem("user_tokens")) || null,
