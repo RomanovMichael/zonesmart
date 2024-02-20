@@ -1,25 +1,25 @@
 <template>
-    <div class="app-wrap">
+    <main class="main">
         <AppNav />
-        <TheProducts />
-    </div>
+        <AppProducts />
+    </main>
 </template>
 
 <script>
-import TheProducts from "../components/TheProducts"
+import AppProducts from "../components/AppProducts"
 import AppNav from "../components/AppNav"
 
 export default {
     name: "AppView",
     components: {
-        TheProducts,
+        AppProducts,
         AppNav,
     },
 }
 </script>
 
 <style lang="scss">
-.app-wrap {
-    padding-top: 6.875rem;
+.main {
+    padding: 6.875rem 0;
 }
 </style>
