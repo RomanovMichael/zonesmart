@@ -154,3 +154,13 @@
     background-position: center center;
 
 }
+
+.input-showpass {
+    color: $gray;
+    transition: color .3s ease;
+
+    &:hover {
+        color: $black;
+        transition: color .3s ease;
+    }
+}

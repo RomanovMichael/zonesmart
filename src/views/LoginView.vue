@@ -1,26 +1,26 @@
 <template lang="pug">
 .login
-    .login-head.flex.--just-space.--align-center
+    .login-head
         a.login-logo(href="#")
             root-icon(name="LogoIcon")
         .login-socials
-            .socials.flex.--align-center
+            .socials
                 .socials-label Поддержка
-                .socials-links.flex.--align-center
+                .socials-links
                     a.socials-link.socials-link--tg(href="#")
                         root-icon(name="TgIcon")
                     a.socials-link.socials-link--whats(href="#")
                         root-icon(name="WhatsIcon")
-    request-form
+    login-form
 </template>
 
 <script>
-import RequestForm from "../components/RequestForm"
+import LoginForm from "../components/LoginForm"
 import RootIcon from "@/assets/icons/RootIcon"
 export default {
     name: "LoginView",
     components: {
-        RequestForm,
+        LoginForm,
         RootIcon,
     },
 }
@@ -31,14 +31,22 @@ export default {
     min-height: 100vh;
 
     &-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         padding: 2.5rem;
         margin-bottom: 7.5rem;
     }
 }
 
 .socials {
+    display: flex;
+    align-items: center;
+
     &-links {
         gap: 0.625rem;
+        display: flex;
+        align-items: center;
     }
 
     .socials-link {

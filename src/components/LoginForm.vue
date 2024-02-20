@@ -1,11 +1,11 @@
 <template lang="pug">
-.request-form-wrap.tile
-    form.request-form(@submit.prevent="logIn")
-        h1.request-form-title Вход
-        .request-form-label.request-form-label--reg
+.login-form-wrap.tile
+    form.login-form(@submit.prevent="logIn")
+        h1.login-form-title Вход
+        .login-form-label.login-form-label--reg
             span Нет аккаунта?
             router-link.link(to="#") Зарегистрироваться
-        .request-form-input.input
+        .login-form-input.input
             label.input-label.caption(for="email") Email
             .input-wrap
                 input.input-inner(
@@ -15,23 +15,30 @@
                     placeholder="yourmail@mail.ru",
                     @change="resetErrorCode"
                 )
-        .request-form-input.input
+        .login-form-input.input
             label.input-label.caption(for="password") Пароль
             .input-wrap
                 input.input-inner(
                     v-model.trim="password",
-                    type="password",
+                    :type="input_type",
                     name="pasword",
                     placeholder="Ваш пароль",
                     @change="resetErrorCode"
                 )
-                button.input-showpass
+                button.input-showpass(type="button", @click="toggleInputType")
                     span
-                        root-icon(name="EyeIcon")
-        .request-form-label.request-form-label--forgot
+                        root-icon(
+                            v-if="input_type === 'password'",
+                            name="EyeClosedIcon"
+                        )
+                        root-icon(v-else, name="EyeIcon")
+        .login-form-label.login-form-label--forgot
             router-link.link(to="#") Забыли пароль?
-        span.input-error(v-if="$store.state.login_error_code") {{ error_message }}
-        button.request-form-btn.btn.btn--green(:disabled="is_btn_disabled")
+        span.input-error(v-if="$store.state.login_error_code")
+            | {{
+            | error_message
+            | }}
+        button.login-form-btn.btn.btn--green(:disabled="is_btn_disabled")
             | Войти
 </template>
 
@@ -39,12 +46,13 @@
 import RootIcon from "@/assets/icons/RootIcon"
 
 export default {
-    name: "RequestForm",
+    name: "LoginForm",
     components: { RootIcon },
     data() {
         return {
             email: "",
             password: "",
+            input_type: "password",
             errors: [],
         }
     },
@@ -66,6 +74,10 @@ export default {
         },
     },
     methods: {
+        toggleInputType() {
+            this.input_type =
+                this.input_type === "password" ? "text" : "password"
+        },
         resetErrorCode() {
             this.$store.commit("RESET_ERROR_CODE")
         },
@@ -78,7 +90,7 @@ export default {
 </script>
 
 <style lang="scss">
-.request-form {
+.login-form {
     &-wrap {
         width: 26.875rem;
     }

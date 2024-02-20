@@ -11,5 +11,6 @@
             stroke="currentColor"
         />
         <circle cx="12.5" cy="12.5" r="3" stroke="currentColor" />
+        <path d="M22 3L3 22" stroke="currentColor" />
     </svg>
 </template>
