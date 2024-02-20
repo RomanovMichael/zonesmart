@@ -10,14 +10,14 @@
             cx="12.5"
             cy="12.5"
             r="10.5"
-            stroke="#132639"
+            stroke="currentColor"
             stroke-width="2"
         />
         <path
             d="M10 8.7C10 7.8 11.12 6 13 6C14.484 6 16 6.5 16 8.16C16 10.1982 12.9059 11.181 12.5 13.2C12.3719 13.8374 12.5 15 12.5 15"
-            stroke="#132639"
+            stroke="currentColor"
             stroke-width="2"
         />
-        <rect x="11.5" y="17" width="2" height="2" fill="#132639" />
+        <rect x="11.5" y="17" width="2" height="2" fill="currentColor" />
     </svg>
 </template>

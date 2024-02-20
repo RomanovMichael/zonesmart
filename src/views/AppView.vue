@@ -22,4 +22,10 @@ export default {
 .main {
     padding: 6.875rem 0;
 }
+
+@media screen and (max-width: 1600px) {
+    .main {
+        padding: 6.785rem 2rem;
+    }
+}
 </style>
